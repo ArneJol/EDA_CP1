@@ -10,3 +10,5 @@ dfhhpower <- read.csv2(file="./data/household_power_consumption.txt",
                        colClasses=c("POSIXct","POSIXct","numeric","numeric","numeric",
                                     "numeric","numeric","numeric","numeric"),
                         na.strings="?")
+xcxc
+dffdfsdsd

@@ -1,1 +1,1 @@
-# EDA_CP1
+# Code that provides a solution to the first week course project 1 Exploratory data analysis.

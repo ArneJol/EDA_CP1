@@ -35,13 +35,15 @@ dfhhpower %>%
 # line chart of global active power on thir, fri, sat
 png(filename = "plot2.png", width = 480, height = 480)
 
-    # set up the plot 
-    plot(dfhhpower_smal$DateTime, dfhhpower_smal$Global_active_power, 
-        type="l",  ylab="Global Active Power (kilowats)",
-        xaxt="n") 
-    
-    date_seq <- seq(min(dfhhpower_smal$DateTime), max(dfhhpower_smal$DateTime) + days(1),
+# set up the plot 
+with(dfhhpower_smal,
+  plot(DateTime,
+       Global_active_power, 
+       type="l",
+       ylab="Global Active Power (kilowats)",
+       xaxt="n") 
+ )
+ date_seq <- seq(min(dfhhpower_smal$DateTime), max(dfhhpower_smal$DateTime) + days(1),
                     by="days")
-    axis(side=1, at=date_seq, labels=weekdays(date_seq))
-
-dev.off()
+ axis(side=1, at=date_seq, labels=weekdays(date_seq))
+ dev.off()

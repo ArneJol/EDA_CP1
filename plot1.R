@@ -16,7 +16,10 @@ dfhhpower <- read_delim("./data/household_power_consumption.txt",
 
 # convert Date and Time to proper format
 dfhhpower %>%
-        filter(Date == "2007-02-01" | Date == "2007-02-02") -> dfhhpower_smal
+  mutate(DateTime =  dmy_hms(paste0(Date,"_",Time)),
+         Date = dmy(Date),
+         Time = hms(Time)) %>%
+         filter(Date == "2007-02-01" | Date == "2007-02-02") -> dfhhpower_smal
 
 # histogram of global active power
 png(filename = "plot1.png", width = 480, height = 480)

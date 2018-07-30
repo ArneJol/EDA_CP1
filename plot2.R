@@ -1,35 +1,47 @@
-require(data.table)
+
+# Outline -----------------------------------------------------------------
+
+# plot 2 of Cource project 1
+
+# Load libraries ----------------------------------------------------------
+require(readr)
 require(dplyr)
 require(lubridate)
-# Course project 1
 
-# download zip dataset and unzip to folder
+
+
+# download zip dataset and unzip to folder --------------------------------
 fileurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 download.file(fileurl, "./data/hh_power_consumption.zip")
 unzip("./data/hh_power_consumption.zip", exdir = "./data/")
 
+
+# transform data ----------------------------------------------------------
+
 # read data in dataframe
-dfhhpower <- fread("./data/household_power_consumption.txt",
-                   dec=".",
-                   colClasses=c("character","character","numeric","numeric","numeric",
-                                "numeric","numeric","numeric","numeric"),
-                   na.strings="?")
+dfhhpower <- read_delim("./data/household_power_consumption.txt",
+                        na="?", delim=";")
 
 # convert Date and Time to proper format
-dfhhpower %>% 
-        mutate(Date=dmy(Date)) %>%
-        filter(Date == "2007-02-01" | Date == "2007-02-02") -> dfhhpower_smal
+dfhhpower %>%
+  mutate(DateTime =  dmy_hms(paste0(Date,"_",Time)),
+         Date = dmy(Date),
+         Time = hms(Time)) %>%
+         filter(Date == "2007-02-01" | Date == "2007-02-02") -> dfhhpower_smal
+
+
+# Create plot -------------------------------------------------------------
 
 # line chart of global active power on thir, fri, sat
-# png(filename = "plot2.png", width = 480, height = 480)
+png(filename = "plot2.png", width = 480, height = 480)
 
-     
-     # set up the plot 
-     plot(dfhhpower_sel$Time, dfhhpower_sel$Global_active_power, type="n", , ylab="Global Active Power (kilowats)") 
-     lines(dfhhpower_sel$Time, dfhhpower_sel$Global_active_power, type="l", lwd=1.5) 
-      
-     # add a title and subtitle 
-     title("Tree Growth", "example of line plot")
+    # set up the plot 
+    plot(dfhhpower_smal$DateTime, dfhhpower_smal$Global_active_power, 
+        type="l",  ylab="Global Active Power (kilowats)",
+        xaxt="n") 
     
+    date_seq <- seq(min(dfhhpower_smal$DateTime), max(dfhhpower_smal$DateTime) + days(1),
+                    by="days")
+    axis(side=1, at=date_seq, labels=weekdays(date_seq))
 
-#dev.off()
+dev.off()
